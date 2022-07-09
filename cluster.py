@@ -1,3 +1,6 @@
+import numpy as np
+import pandas as pd
+
 def nbrs(a,ds,eps):
     __nbrs = []
     dist = []
@@ -12,7 +15,7 @@ def nbrs(a,ds,eps):
         
     return __nbrs, dist
 
-def dbscan(ds, eps=3, numpts = 10, axis=0):
+def dbscan(ds, eps=0.5, numpts = 3):
     
     c = 0
     ia = 0
@@ -55,3 +58,6 @@ def dbscan(ds, eps=3, numpts = 10, axis=0):
         c = c+1
     
     return ds,label
+
+
+    
