@@ -1,11 +1,9 @@
-import numpy as np
-import pandas as pd
-
 def nbrs(a,ds,eps):
     __nbrs = []
     dist = []
     
     for idx,b in enumerate(ds):
+        #distance metric
         d = np.linalg.norm(b-a)
         
         if d <= eps:
@@ -14,9 +12,7 @@ def nbrs(a,ds,eps):
         
     return __nbrs, dist
 
-def dbscan(df, eps=3, numpts = 10, axis=0):
-    
-    ds = df.to_numpy()
+def dbscan(ds, eps=3, numpts = 10, axis=0):
     
     c = 0
     ia = 0
@@ -25,19 +21,19 @@ def dbscan(df, eps=3, numpts = 10, axis=0):
     
     
     for idx, ia in enumerate(ds):
-        
+        #if labelled already
         if label[idx]>-2:
             continue
         
-        _nbrs,d = nbrs(ia,ds,eps)
-            
+        _nbrs,_ = nbrs(ia,ds,eps)
+        #if not enough neighbours then noise
         if len(_nbrs)+1 < numpts:
             label[idx] = -1
             continue
         
         label[idx] = c
         seedset = _nbrs
-        
+        #build neighbours seedset
         for s in seedset:
             
             if label[s] == -1:
@@ -45,11 +41,12 @@ def dbscan(df, eps=3, numpts = 10, axis=0):
             if label[s] > -2:
                 continue
             
+            #add to current set
             label[s] = c
             _nbrs, _ = nbrs(ds[s],ds,eps)
             
             if len(_nbrs)+1 >= numpts:
-                
+                #extends set
                 ss = set(seedset)
                 for i in _nbrs:
                     if i not in ss:
@@ -58,6 +55,3 @@ def dbscan(df, eps=3, numpts = 10, axis=0):
         c = c+1
     
     return ds,label
-
-
-    
