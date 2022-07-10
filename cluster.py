@@ -33,7 +33,7 @@ def dbscan(ds, eps=0.5, numpts = 3):
         if len(_nbrs)+1 < numpts:
             label[idx] = -1
             continue
-        
+        #since it is not a noise point - assign current point to cluster
         label[idx] = c
         seedset = _nbrs
         #build neighbours seedset
